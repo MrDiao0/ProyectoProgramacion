@@ -1,28 +1,55 @@
 from tkinter import *
-import random,time,winsound
+import random,time
 
+#Conjunto en el que se encuentran las teclas presionadas
 h = []
-i = 0
-j = 0
-k = 0
-l = -160
-m = -100
+
+#Valor de la gasolina para el modo un jugador
 gas = 75
+
+
+#Gasolina jugador 1 en modo versus
 gas1 = 75
+#Gasolina jugador 2 en modo versus
 gas2 = 75
+
+#Velocidad de la pista para un jugador y para el jugador 1 en el modo versus
 MaxS = 0
+#Velocidad de la pista para el jugador 2 en modo versus
 MaxS2 = 0
+
+#Puntaje para el modo un jugador
 score = 0
+
+#Puntaje para el jugador 1 en modo versus
 score1 = 0
+#Puntaje para el jugador 2 en modo versus
 score2 = 0
-SpeedT = 0
+
+#Velocidad del vehiculo del Usuario
 SpeedC = 0
+#Velocidad del vehiculo en el label
+SpeedC1 = 0
+#Velocidad del Vehiculo en el label modo versus
+SpeedC2 = 0
+
+#Velocidad de los vehiculos generados aleatoriamente
 SpeedV = 0
+
+#Indice de aparicion de Vehiculos enemigos
 SpawnV = 0
+#Indice de aparicion de items(power-ups) 
 SpawnP = 0
+
+#Afirma cuando el jugador 1 acabo con su gasolina o perdio
 Player1W = True
+#Afirma cuando el jugador 1 acabo con su gasolina o perdio
 Player2W = True
+
+#Velocidad de cada vehiculo individualmente en el eje Y, la cual puede variar
 velocidady2 = 0
+
+#Velocidad para el vehiculo runner la cual varia constantemente
 velocidadx1 = 0
 
 #========================================ONE PLAYER==================================================#
@@ -34,6 +61,10 @@ def LvlsMenuS():
         """
         """
         def SinglePlayer():
+            """
+            Funcion principal para el modo un jugador
+            """
+    
             # Crea la ventana y la asocia a la variable v
             global window
             ventana3.destroy()
@@ -57,16 +88,25 @@ def LvlsMenuS():
             
 
             def BG():
+                """
+                Mueve la carretera dependiendo de la velocidad del nivel
+                """
                 global MaxS
                 d.move(w,0,MaxS)
                 v.after(10,BG)
                     
 
             def Fighter():
+                """
+                Funcion principal para la generacion del vehiculo: Fighter
+                """
                 FighterX = random.randint(390,910)
                 q2 = d.create_image(FighterX,-87,image=ImgCar3)
                 def MoverFighter():
-                    global gas,MaxS,SpeedV,score
+                    """
+                    Funcion la cual mueve el vehiculo: Fighter, dependiendo de la velocidad dada por el nivel
+                    """
+                    global gas,MaxS,SpeedV,score,SpeedC1
                     posx22 = d.coords(q2)[0]
                     posy22 = d.coords(q2)[1]
                     posx11 = d.coords(x)[0]
@@ -84,11 +124,13 @@ def LvlsMenuS():
                         if(posx11 >= posx22 and posx11 <= posx22 + 49 and posy11 >= posy22 and posy11 <= posy22 + 160):
                             gas = gas - 10
                             score = score -20
+                            SpeedC1 = SpeedC1-15
                             d.delete(q2)
                             return
                         if(posx11 <= posx22 and posx11 - 49 >= posx22 and posy11 <= posy22 and posy11 + 160 <= posy22):
                             gas = gas - 10
                             score = score -20
+                            SpeedC1 = SpeedC1-15
                             d.delete(q2)
                             return
                         
@@ -101,17 +143,26 @@ def LvlsMenuS():
                 MoverFighter()
                 
             def Runner():
+                """
+                Funcion principal para la generacion del vehiculo: Runner
+                """
                 RunnerX = random.randint(390,910)
                 q = d.create_image(RunnerX,-87,image=ImgCar)
                 velocidadx1 = random.randint(0,1)
                 def MoverRunner():
+                    """
+                    Funcion la cual mueve el vehiculo: Fighter, dependiendo de la velocidad dada por el nivel
+                    """
                     global gas,MaxS,SpeedV,score
                     
                     velocidady1 = random.randint(4,SpeedV)
                     if(d.coords(q)[1] <= 800 ):
                         
                         def MoveLeft():
-                            global gas,MaxS,SpeedV,score
+                            """
+                            Funcion la cual mueve el vehiculo Runner hacia el lado izquierdo
+                            """
+                            global gas,MaxS,SpeedV,score,SpeedC1
                             posx22 = d.coords(q)[0]
                             posy22 = d.coords(q)[1]
                             posx11 = d.coords(x)[0]
@@ -119,21 +170,25 @@ def LvlsMenuS():
                             if(posx11 >= posx22 and posx11 <= posx22 + 49 and posy11 >= posy22 and posy11 <= posy22 + 160):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(posx11 <= posx22 and posx11 + 49 >= posx22 and posy11 <= posy22 and posy11 + 160 <= posy22):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(posx11 <= posx22 and posx11 >= posx22 - 49 and posy11 <= posy22 and posy11 >= posy22 - 160):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(posx11 >= posx22 and posx11 + 49 <= posx22 and posy11 >= posy22 and posy11 + 160 >= posy22):
                                 gas = gas - 10
                                 score = score - 20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(d.coords(q)[0] > 390):
@@ -143,7 +198,10 @@ def LvlsMenuS():
                             else:
                                 MoveRight()
                         def MoveRight():
-                            global gas,MaxS,SpeedV,score
+                            """
+                            Funcion la cual mueve el vehiculo Runner hacia el lado derecho
+                            """
+                            global gas,MaxS,SpeedV,score,SpeedC1
                             posx22 = d.coords(q)[0]
                             posy22 = d.coords(q)[1]
                             posx11 = d.coords(x)[0]
@@ -151,21 +209,25 @@ def LvlsMenuS():
                             if(posx11 >= posx22 and posx11 <= posx22 + 49 and posy11 >= posy22 and posy11 <= posy22 + 160):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(posx11 <= posx22 and posx11 + 49 >= posx22 and posy11 <= posy22 and posy11 + 160 <= posy22):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(posx11 <= posx22 and posx11 >= posx22 - 49 and posy11 <= posy22 and posy11 >= posy22 - 160):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(posx11 >= posx22 and posx11 + 49 <= posx22 and posy11 >= posy22 and posy11 + 160 >= posy22):
                                 gas = gas - 10
                                 score = score -20
+                                SpeedC1 = SpeedC1-15
                                 d.delete(q)
                                 return
                             if(d.coords(q)[0] < 910):
@@ -188,10 +250,16 @@ def LvlsMenuS():
 
 
             def Minivan():
+                """
+                Funcion principal para la generacion del vehiculo: Minivan
+                """
                 MinivanX = random.randint(390,910)
                 q1 = d.create_image(MinivanX,-87,image=ImgCar2)
                 def MoverMinivan():
-                    global gas,MaxS,SpeedV,score
+                    """
+                    Funcion la cual mueve el vehiculo: Fighter, dependiendo de la velocidad dada por el nivel
+                    """
+                    global gas,MaxS,SpeedV,score,SpeedC1
                     posx22 = d.coords(q1)[0]
                     posy22 = d.coords(q1)[1]
                     posx11 = d.coords(x)[0]
@@ -203,18 +271,22 @@ def LvlsMenuS():
                         if(posx11 >= posx22 and posx11 <= posx22 + 49 and posy11 >= posy22 and posy11 <= posy22 + 160):
                             gas = gas - 10
                             score = score -20
+                            SpeedC1 = SpeedC1-15
                             d.move(q1,0,1000)
                         if(posx11 <= posx22 and posx11 + 49 >= posx22 and posy11 <= posy22 and posy11 + 160 <= posy22):
                             gas = gas - 10
                             score = score -20
+                            SpeedC1 = SpeedC1-15
                             d.move(q1,0,1000)
                         if(posx11 <= posx22 and posx11 >= posx22 - 49 and posy11 <= posy22 and posy11 >= posy22 - 160):
                             gas = gas - 10
                             score = score -20
+                            SpeedC1 = SpeedC1-15
                             d.move(q1,0,1000)
                         if(posx11 >= posx22 and posx11 + 49 <= posx22 and posy11 >= posy22 and posy11 + 160 >= posy22):
                             gas = gas - 10
                             score = score -20
+                            SpeedC1 = SpeedC1-15
                             d.move(q1,0,1000)
                     
                     else:
@@ -226,9 +298,15 @@ def LvlsMenuS():
                 MoverMinivan()
 
             def PowerGas():
+                """
+                Funcion principal para la generacion del item: Gasolina
+                """
                 GasX = random.randint(390,910)
                 q1 = d.create_image(GasX,-87,image=ImgGas)
                 def MoveGas():
+                    """
+                    Funcion la cual mueve el item: Gasolina
+                    """
                     global gas,MaxS,score
                     posx22 = d.coords(q1)[0]
                     posy22 = d.coords(q1)[1]
@@ -263,10 +341,16 @@ def LvlsMenuS():
                 MoveGas()
 
             def Oil():
+                """
+                Funcion principal para la generacion del item: Aceite
+                """
                 OilX = random.randint(390,910)
                 q1 = d.create_image(OilX,-87,image=ImgOil)
                 def MoveOil():
-                    global MaxS
+                    """
+                    Funcion la cual mueve el item: Aceite
+                    """
+                    global MaxS,SpeedC1
                     posx22 = d.coords(q1)[0]
                     posy22 = d.coords(q1)[1]
                     posx11 = d.coords(x)[0]
@@ -278,21 +362,29 @@ def LvlsMenuS():
                         if(posx22 <= 650):
                             if(posx11 >= posx22 and posx11 <= posx22 + 49 and posy11 >= posy22 and posy11 <= posy22 + 160):
                                 d.move(x,30,0)
+                                SpeedC1 = SpeedC1-5
                             if(posx11 <= posx22 and posx11 + 49 >= posx22 and posy11 <= posy22 and posy11 + 160 <= posy22):
                                 d.move(x,30,0)
+                                SpeedC1 = SpeedC1-5
                             if(posx11 <= posx22 and posx11 >= posx22 - 49 and posy11 <= posy22 and posy11 >= posy22 - 160):
                                 d.move(x,30,0)
+                                SpeedC1 = SpeedC1-5
                             if(posx11 >= posx22 and posx11 + 49 <= posx22 and posy11 >= posy22 and posy11 + 160 >= posy22):
                                 d.move(x,30,0)
+                                SpeedC1 = SpeedC1-5
                         if(posx22 > 650):
                             if(posx11 >= posx22 and posx11 <= posx22 + 49 and posy11 >= posy22 and posy11 <= posy22 + 160):
                                 d.move(x,-30,0)
+                                SpeedC1 = SpeedC1-5
                             if(posx11 <= posx22 and posx11 + 49 >= posx22 and posy11 <= posy22 and posy11 + 160 <= posy22):
                                 d.move(x,-30,0)
+                                SpeedC1 = SpeedC1-5
                             if(posx11 <= posx22 and posx11 >= posx22 - 49 and posy11 <= posy22 and posy11 >= posy22 - 160):
                                 d.move(x,-30,0)
+                                SpeedC1 = SpeedC1-5
                             if(posx11 >= posx22 and posx11 + 49 <= posx22 and posy11 >= posy22 and posy11 + 160 >= posy22):
                                 d.move(x,-30,0)
+                                SpeedC1 = SpeedC1-5
                     
                     else:
                         d.delete(q1)
@@ -312,14 +404,15 @@ def LvlsMenuS():
                 h.append(e.keycode)
                 
             def key():
-                global h,i,SpeedC
+                """
+                Funcion que genera movimiento a base presionar ciertas teclas determinadas por el usuario
+                """
+                global h,SpeedC
                 if(68 in h):
                     if(d.coords(x)[0] < 890):
-                        i = i + 10
                         d.move(x,SpeedC,0)
                 if(65 in h):
                     if(d.coords(x)[0] > 405):
-                        i = i - 10
                         d.move(x,-(SpeedC),0)
                 if(MaxS !=0):
                     d.after(15,key)
@@ -327,6 +420,9 @@ def LvlsMenuS():
                 exit()
 
             def Gas():
+                """
+                Funcion la cual define y cambia el item: Gasolina y lo muestra en un Label
+                """
                 global gas,MaxS
                 LblGas = Label(v,text = gas,bg="black",fg="white",font =("8bitoperator JVE",40)).place(x=1240,y=400)
                 d.delete(LblGas)
@@ -342,6 +438,9 @@ def LvlsMenuS():
                 d.after(500,Gas)
 
             def Score():
+                """
+                Funcion la cual define y cambia el item: Puntaje y lo muestra en un Label
+                """
                 global score
                 if(MaxS != 0):
                     score = score + 15
@@ -353,6 +452,9 @@ def LvlsMenuS():
 
 
             def Victory():
+                """
+                Funcion la cual despues de sobrevivir 60 segundos, muestra la victoria del jugador
+                """
                 global MaxS
                 if(MaxS != 0):
                     MaxS = 0
@@ -361,6 +463,23 @@ def LvlsMenuS():
                         d.delete(LblWin)
                         LblGas = Label(v,text = "THE END...?",bg="black",fg="white",font =("8bitoperator JVE",100)).place(x=200,y=300)
                     d.after(2000,exitt)
+
+            def Speed():
+                """
+                Funcion la cual muestra en un label la velocidad a la que va el usuario
+                """
+                global SpeedC,SpeedC1,MaxS
+                if(MaxS !=0):
+                    if(Track01 == "Textures\Tracks\Level5\Track52.png"):
+                        LblSpeed = Label(d,text = "Speed: 999",bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=1220,y=240)
+                    else:
+                        if(SpeedC1 < int((SpeedC*100)/3)):
+                            SpeedC1 = SpeedC1 + 1
+                        LblSpeed = Label(d,text = "Speed: " + str(SpeedC1) ,bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=1220,y=240)
+                        d.delete(LblSpeed)
+                else:
+                    LblSpeed = Label(d,text = "Speed: 000",bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=1220,y=240)
+                d.after(200,Speed)
                         
             w = d.create_image(640,-10200,image=ImgTrack)
 
@@ -377,6 +496,9 @@ def LvlsMenuS():
 
 
             def Randoms():
+                """
+                Funcion la se encarga de generar items y vehiculos de manera aleatoria y en posiciones aleatorias
+                """
                 global SpawnV,SpawnP
                 RandomV = random.randint(0,SpawnV)
                 if(RandomV == 0 and MaxS !=0):
@@ -398,6 +520,7 @@ def LvlsMenuS():
             Randoms()
             Gas()
             Score()
+            Speed()
             d.after(60000,Victory)
             #======================================================#
             
@@ -430,56 +553,66 @@ def LvlsMenuS():
         ventana3.mainloop()
     def Level11():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1
         MaxS = 4
         SpawnV = 500
         SpawnP = 600
         SpeedC = 7
+        SpeedC1 = int((SpeedC*100)/3)
         SpeedV = 7
         Track01="Textures\Tracks\Level1\Track12.png"
         SPMenu(Track01)
     def Level21():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1
         MaxS = 6
         SpawnV = 400
         SpawnP = 600
         SpeedC = 7
+        SpeedC1 = int((SpeedC*100)/3)
         SpeedV = 7
         Track01="Textures\Tracks\Level2\Track22.png"
         SPMenu(Track01)
     def Level31():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1
         MaxS = 7
         SpawnV = 300
         SpawnP = 650
         SpeedC = 8
+        SpeedC1 = int((SpeedC*100)/3)
         SpeedV = 7
         Track01="Textures\Tracks\Level3\Track32.png"
         SPMenu(Track01)
     def Level41():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1
         MaxS = 8
         SpawnV = 200
         SpawnP = 650
         SpeedC = 8
+        SpeedC1 = int((SpeedC*100)/3)
         SpeedV = 8 
         Track01="Textures\Tracks\Level4\Track42.png"
         SPMenu(Track01)
     def Level51():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1
         MaxS = 10
         SpawnV = 150
         SpawnP = 700
         SpeedC = 9
+        SpeedC1 = int((SpeedC*100)/3)
         SpeedV = 10
         Track01="Textures\Tracks\Level5\Track52.png"
         SPMenu(Track01)
@@ -521,6 +654,9 @@ def LvlsMenuV():
         """
         """
         def VersusGame():
+            """
+            Funcion principal para el modo un Versus
+            """
             # Crea la ventana y la asocia a la variable v
             ventana3.destroy()
             v = Tk()
@@ -544,6 +680,7 @@ def LvlsMenuV():
 
             def BG():
                 """
+                Mueve la carretera dependiendo de la velocidad del nivel
                 """
                 global MaxS,MaxS2
                 d.move(w,0,MaxS)
@@ -553,7 +690,7 @@ def LvlsMenuV():
             def Fighter1(FighterX):
                 q2 = d.create_image(FighterX,-87,image=ImgCar3)
                 def MoverFighter1():
-                    global SpeedV,gas1,score1,velocidady2
+                    global SpeedV,gas1,score1,velocidady2,SpeedC1
 
                     posx1 = d.coords(x)[0]
                     posy1 = d.coords(x)[1]
@@ -565,21 +702,25 @@ def LvlsMenuV():
                         if(posx1 >= posxx1 and posx1 <= posxx1 + 25 and posy1 >= posyy1 and posy1 <= posyy1 + 80):
                             gas1 = gas1 - 10
                             score1 = score1 - 25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q2)
                             return
                         if(posx1 <= posxx1 and posx1 + 25 >= posxx1 and posy1 <= posyy1 and posy1 + 80 <= posyy1):
                             gas1 = gas1 - 10
                             score1 = score1 - 25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q2)
                             return
                         if(posx1 <= posxx1 and posx1 >= posxx1 - 25 and posy1 <= posyy1 and posy1 >= posyy1 - 80):
                             gas1 = gas1 - 10
                             score1 = score1 - 25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q2)
                             return
                         if(posx1 >= posxx1 and posx1 + 25 <= posxx1 and posy1 >= posyy1 and posy1 + 80 >= posyy1):
                             gas1 = gas1 - 10
                             score1 = score1 - 25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q2)
                             return
 
@@ -602,7 +743,7 @@ def LvlsMenuV():
             def Fighter2(FighterX):
                 q3 = d.create_image(FighterX+900,-87,image=ImgCar3)
                 def MoverFighter2():
-                    global SpeedV,gas2,score2,velocidady2
+                    global SpeedV,gas2,score2,velocidady,SpeedC2
 
                     posx2 = d.coords(x1)[0]
                     posy2 = d.coords(x1)[1]
@@ -613,21 +754,25 @@ def LvlsMenuV():
                         if(posx2 >= posxx2 and posx2 <= posxx2 + 25 and posy2 >= posyy2 and posy2 <= posyy2 + 80):
                             gas2 = gas2 - 10
                             score2 = score2 - 25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q3)
                             return
                         if(posx2 <= posxx2 and posx2 + 25 >= posxx2 and posy2 <= posyy2 and posy2 + 80 <= posyy2):
                             gas2 = gas2 - 10
                             score2 = score2 - 25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q3)
                             return
                         if(posx2 <= posxx2 and posx2 >= posxx2 - 25 and posy2 <= posyy2 and posy2 >= posyy2 - 80):
                             gas2 = gas2 - 10
                             score2 = score2 - 25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q3)
                             return
                         if(posx2 >= posxx2 and posx2 + 25 <= posxx2 and posy2 >= posyy2 and posy2 + 80 >= posyy2):
                             gas2 = gas2 - 10
                             score2 = score2 - 25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q3)
                             return
                         
@@ -651,7 +796,7 @@ def LvlsMenuV():
                     if(d.coords(q1)[1] <= 800 ):
                         
                         def MoveLeft1():
-                            global SpeedV,gas1,score1,velocidady2,velocidadx1
+                            global SpeedV,gas1,score1,velocidady2,velocidadx1,SpeedC1
                             posx22 = d.coords(q1)[0]
                             posy22 = d.coords(q1)[1]
                             posx11 = d.coords(x)[0]
@@ -659,21 +804,25 @@ def LvlsMenuV():
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 gas1 = gas1 - 10
                                 score1 = score1 -20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 gas1 = gas1 - 10
                                 score1 = score1 -20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 gas1 = gas1 - 10
                                 score1 = score1 -20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 gas1 = gas1 - 10
                                 score1 = score1 - 20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             
@@ -683,7 +832,7 @@ def LvlsMenuV():
                             else:
                                 MoveRight1()
                         def MoveRight1():
-                            global SpeedV,gas1,score1,velocidady2,velocidadx1
+                            global SpeedV,gas1,score1,velocidady2,velocidadx1,SpeedC1
                             posx22 = d.coords(q1)[0]
                             posy22 = d.coords(q1)[1]
                             posx11 = d.coords(x1)[0]
@@ -691,21 +840,25 @@ def LvlsMenuV():
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 gas1 = gas1 - 10
                                 score1 = score1 -20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 gas1 = gas1 - 10
                                 score1 = score1 -20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 gas1 = gas1 - 10
                                 score1 = score1 -20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 gas1 = gas1 - 10
                                 score1 = score1 - 20
+                                SpeedC1 = SpeedC1 -15
                                 d.delete(q1)
                                 return
                             
@@ -731,7 +884,7 @@ def LvlsMenuV():
                     if(d.coords(q2)[1] <= 800 ):
                         
                         def MoveLeft2():
-                            global SpeedV,gas2,score2,velocidady2,velocidadx1
+                            global SpeedV,gas2,score2,velocidady2,velocidadx1,SpeedC2
                             posx22 = d.coords(q2)[0]
                             posy22 = d.coords(q2)[1]
                             posx11 = d.coords(x)[0]
@@ -739,21 +892,25 @@ def LvlsMenuV():
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 gas2 = gas2 - 10
                                 score2 = score2 -20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 gas2 = gas2 - 10
                                 score2 = score2 -20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 gas2 = gas2 - 10
                                 score2 = score2 -20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 gas2 = gas2 - 10
                                 score2 = score2 - 20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             
@@ -763,7 +920,7 @@ def LvlsMenuV():
                             else:
                                 MoveRight2()
                         def MoveRight2():
-                            global SpeedV,gas2,score2,velocidady2,velocidadx1
+                            global SpeedV,gas2,score2,velocidady2,velocidadx1,SpeedC2
                             posx22 = d.coords(q2)[0]
                             posy22 = d.coords(q2)[1]
                             posx11 = d.coords(x1)[0]
@@ -771,21 +928,25 @@ def LvlsMenuV():
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 gas2 = gas2 - 10
                                 score2 = score2 -20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 gas2 = gas2 - 10
                                 score2 = score2 -20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 gas2 = gas2 - 10
                                 score2 = score2 -20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 gas2 = gas2 - 10
                                 score2 = score2 - 20
+                                SpeedC2 = SpeedC2 -15
                                 d.delete(q2)
                                 return
                             
@@ -809,7 +970,7 @@ def LvlsMenuV():
                 q1 = d.create_image(MinivanX,-87,image=ImgCar2)
                 
                 def MoverMinivan1():
-                    global SpeedV,score1,gas1,velocidady2
+                    global SpeedV,score1,gas1,velocidady2,SpeedC1
 
                     posx1 = d.coords(x)[0]
                     posy1 = d.coords(x)[1]
@@ -821,21 +982,25 @@ def LvlsMenuV():
                         if(posx1 >= posxx1 and posx1 <= posxx1 + 25 and posy1 >= posyy1 and posy1 <= posyy1 + 80):
                             gas1 = gas1 - 10
                             score1 = score1 -25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q1)
                             return
                         if(posx1 <= posxx1 and posx1 + 25 >= posxx1 and posy1 <= posyy1 and posy1 + 80 <= posyy1):
                             gas1 = gas1 - 10
                             score1 = score1 -25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q1)
                             return
                         if(posx1 <= posxx1 and posx1 >= posxx1 - 25 and posy1 <= posyy1 and posy1 >= posyy1 - 80):
                             gas1 = gas1 - 10
                             score1 = score1 -25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q1)
                             return
                         if(posx1 >= posxx1 and posx1 + 25 <= posxx1 and posy1 >= posyy1 and posy1 + 80 >= posyy1):
                             gas1 = gas1 - 10
                             score1 = score1 -25
+                            SpeedC1 = SpeedC1 -15
                             d.delete(q1)
                             return
                     else:
@@ -850,7 +1015,7 @@ def LvlsMenuV():
             def Minivan2(MinivanX):
                 q2 = d.create_image(MinivanX+900,-87,image=ImgCar2)
                 def MoverMinivan2():
-                    global SpeedV,score2,gas2,velocidady2
+                    global SpeedV,score2,gas2,velocidady2,SpeedC2
 
                     posx2 = d.coords(x1)[0]
                     posy2 = d.coords(x1)[1]
@@ -862,21 +1027,25 @@ def LvlsMenuV():
                         if(posx2 >= posxx2 and posx2 <= posxx2 + 25 and posy2 >= posyy2 and posy2 <= posyy2 + 80):
                             gas2 = gas2 - 10
                             score2 = score2 -25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q2)
                             return
                         if(posx2 <= posxx2 and posx2 + 25 >= posxx2 and posy2 <= posyy2 and posy2 + 80 <= posyy2):
                             gas2 = gas2 - 10
                             score2 = score2 -25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q2)
                             return
                         if(posx2 <= posxx2 and posx2 >= posxx2 - 25 and posy2 <= posyy2 and posy2 >= posyy2 - 80):
                             gas2 = gas2 - 10
                             score2 = score2 -25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q2)
                             return
                         if(posx2 >= posxx2 and posx2 + 25 <= posxx2 and posy2 >= posyy2 and posy2 + 80 >= posyy2):
                             gas2 = gas2 - 10
                             score2 = score2 -25
+                            SpeedC2 = SpeedC2 -15
                             d.delete(q2)
                             return
                     else:
@@ -968,7 +1137,7 @@ def LvlsMenuV():
             def Oil1(OilX):
                 q1 = d.create_image(OilX,-87,image=ImgOil)
                 def MoveOil1():
-                    global MaxS
+                    global MaxS,SpeedC1
                     posx22 = d.coords(q1)[0]
                     posy22 = d.coords(q1)[1]
                     posx11 = d.coords(x)[0]
@@ -980,21 +1149,29 @@ def LvlsMenuV():
                         if(posx22 <= 310):
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 d.move(x,10,0)
+                                SpeedC1 = SpeedC1 -5
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 d.move(x,10,0)
+                                SpeedC1 = SpeedC1 -5
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 d.move(x,10,0)
+                                SpeedC1 = SpeedC1 -5
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 d.move(x,10,0)
+                                SpeedC1 = SpeedC1 -5
                         if(posx22 > 310):
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 d.move(x,-10,0)
+                                SpeedC1 = SpeedC1 -5
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 d.move(x,-10,0)
+                                SpeedC1 = SpeedC1 -5
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 d.move(x,-10,0)
+                                SpeedC1 = SpeedC1 -5
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 d.move(x,-10,0)
+                                SpeedC1 = SpeedC1 -5
                     
                     else:
                         d.delete(q1)
@@ -1006,7 +1183,7 @@ def LvlsMenuV():
             def Oil2(OilX):
                 q1 = d.create_image(OilX+900,-87,image=ImgOil)
                 def MoveOil2():
-                    global MaxS
+                    global MaxS,SpeedC2
                     posx22 = d.coords(q1)[0]
                     posy22 = d.coords(q1)[1]
                     posx11 = d.coords(x1)[0]
@@ -1018,21 +1195,29 @@ def LvlsMenuV():
                         if(posx22 <= 1210):
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 d.move(x1,10,0)
+                                SpeedC2 = SpeedC2 -5
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 d.move(x1,10,0)
+                                SpeedC2 = SpeedC2 -5
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 d.move(x1,10,0)
+                                SpeedC2 = SpeedC2 -5
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 d.move(x1,10,0)
+                                SpeedC2 = SpeedC2 -5
                         if(posx22 > 1210):
                             if(posx11 >= posx22 and posx11 <= posx22 + 25 and posy11 >= posy22 and posy11 <= posy22 + 80):
                                 d.move(x1,-10,0)
+                                SpeedC2 = SpeedC2 -5
                             if(posx11 <= posx22 and posx11 + 25 >= posx22 and posy11 <= posy22 and posy11 + 80 <= posy22):
                                 d.move(x1,-10,0)
+                                SpeedC2 = SpeedC2 -5
                             if(posx11 <= posx22 and posx11 >= posx22 - 25 and posy11 <= posy22 and posy11 >= posy22 - 80):
                                 d.move(x1,-10,0)
+                                SpeedC2 = SpeedC2 -5
                             if(posx11 >= posx22 and posx11 + 25 <= posx22 and posy11 >= posy22 and posy11 + 80 >= posy22):
                                 d.move(x1,-10,0)
+                                SpeedC2 = SpeedC2 -5
                     
                     else:
                         d.delete(q1)
@@ -1054,24 +1239,20 @@ def LvlsMenuV():
             def key():
                 """
                 """
-                global h,i,j,SpeedV
+                global h,SpeedV
                 if(MaxS != 0):
                     if(68 in h):
                         if(d.coords(x)[0] < 450):
-                            i = i + 10
                             d.move(x,SpeedV,0)
                     if(65 in h):
                         if(d.coords(x)[0] > 170):
-                            i = i - 10
                             d.move(x,-(SpeedV),0)
                 if(MaxS2 != 0):
                     if(74 in h):
                         if(d.coords(x1)[0] > 1070):
-                            j = j - 10
                             d.move(x1,-(SpeedV),0)
                     if(76 in h):
                         if(d.coords(x1)[0] < 1350):
-                            j = j + 10
                             d.move(x1,SpeedV,0)
                 d.after(15,key)
                 
@@ -1117,6 +1298,33 @@ def LvlsMenuV():
                 d.after(500,Gas)
             
 
+            def Speed():
+                """
+                Funcion la cual muestra en un label la velocidad a la que va el usuario
+                """
+                global SpeedC,SpeedC1,SpeedC2,MaxS
+                if(MaxS !=0):
+                    if(Track02 == "Textures\Tracks\Level5\Track522.png"):
+                        LblSpeed1 = Label(d,text = "Speed: 999",bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=640,y=200)
+                    else:
+                        if(SpeedC1 < int((SpeedC*100)/3)):
+                            SpeedC1 = SpeedC1 + 1
+                        LblSpeed1 = Label(d,text = "Speed: " + str(SpeedC1) ,bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=640,y=200)
+                        d.delete(LblSpeed1)
+                else:
+                    LblSpeed1 = Label(d,text = "Speed: 000",bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=640,y=200)
+                if(MaxS2 !=0):
+                    if(Track02 == "Textures\Tracks\Level5\Track522.png"):
+                        LblSpeed2 = Label(d,text = "Speed: 999",bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=640,y=260)
+                    else:
+                        if(SpeedC2 < int((SpeedC*100)/3)):
+                            SpeedC2 = SpeedC2 + 1
+                        LblSpeed2 = Label(d,text = "Speed: " + str(SpeedC2) ,bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=640,y=260)
+                        d.delete(LblSpeed2)
+                else:
+                    LblSpeed2 = Label(d,text = "Speed: 000",bg="black",fg="white",font=("8bitoperator JVE",40)).place(x=640,y=260)
+                d.after(200,Speed)
+            
             def Score():
                 global score1,score2,Player1W,Player2W
                 if(Player1W == True):
@@ -1185,6 +1393,7 @@ def LvlsMenuV():
             key()
             Random2()
             Gas()
+            Speed()
             Score()
             #===================================================#
             d.create_image(-375,0,image=ImgScore,anchor=NW)
@@ -1224,56 +1433,69 @@ def LvlsMenuV():
 
     def Level12():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1,SpeedC2
         MaxS = 4
         MaxS2 = 4
         SpawnV = 500
         SpawnP = 600
         SpeedC = 7
+        SpeedC1 = int((SpeedC*100)/3)
+        SpeedC2 = int((SpeedC*100)/3)
         SpeedV = 7
         Track02 = "Textures\Tracks\Level1\Track122.png"
         VersusMenu(Track02)
     def Level22():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1,SpeedC2
         MaxS = 6
         MaxS2 = 6
         SpawnV = 400
         SpawnP = 600
         SpeedC = 7
+        SpeedC1 = int((SpeedC*100)/3)
+        SpeedC2 = int((SpeedC*100)/3)
         SpeedV = 7
         Track02 = "Textures\Tracks\Level2\Track222.png"
         VersusMenu(Track02)
     def Level32():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1,SpeedC2
         MaxS = 7
         MaxS2 = 7
         SpawnV = 300
         SpawnP = 650
         SpeedC = 8
+        SpeedC1 = int((SpeedC*100)/3)
+        SpeedC2 = int((SpeedC*100)/3)
         SpeedV = 7
         Track02 = "Textures\Tracks\Level3\Track322.png"
         VersusMenu(Track02)
     def Level42():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1,SpeedC2
         MaxS = 8
         MaxS2 = 8
         SpawnV = 200
         SpawnP = 650
         SpeedC = 8
+        SpeedC1 = int((SpeedC*100)/3)
+        SpeedC2 = int((SpeedC*100)/3)
         SpeedV = 8
         Track02 = "Textures\Tracks\Level4\Track422.png"
         VersusMenu(Track02)
     def Level52():
         """
+        Funcion la cual le da la velocidad a los velhiculos, el indice de aparicion de items y vehiculos y carga la imagen del Mapa
         """
-        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV
+        global MaxS,MaxS2,SpawnV,SpawnP,SpeedC,SpeedV,SpeedC1,SpeedC2
         MaxS = 10
         MaxS2 = 10
         SpawnV = 150
@@ -1316,6 +1538,7 @@ def LvlsMenuV():
 
 def Exit():
     """
+    Funcion que cierra la ventana principal y cierra el proceso
     """
     ventana1.destroy()
     exit()
@@ -1323,6 +1546,7 @@ def Exit():
 #==================================================================================================#
 def Instructions():
     """
+    Funcion la cual genera un menu en donde se encuentran las instrucciones del usuario
     """
     v11 = Toplevel()
     v11.title("Instructions")
